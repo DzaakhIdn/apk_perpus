@@ -22,27 +22,24 @@ $borrows = query("SELECT * FROM minjam_bukus");
     .card {
         box-shadow: 3.5px 4px 0 #222;
     }
-
-    .card-container {
-        box-shadow: 3.5px 4px 0 #60a5fa;
-    }
 </style>
 
 <body class="p-20 bg-slate-50">
     <div class="container">
-        <div class="content flex justify-center flex-col gap-5">
-            <div class="flex justify-between items-center">
+        <div class="content flex justify-center flex-col">
+            <div class="flex justify-between items-center bg-[#7EACB5] p-5 rounded-tl-md rounded-tr-md">
                 <h1 class="font-extrabold text-3xl text-slate-800">BUKU PERPUSTAKAAN📕</h1>
                 <div class="bungkus flex items-center gap-2">
                     <div id="add_data" class="flex justify-between items-center bg-green-300 w-40 py-4 px-3 rounded-md hover:cursor-pointer hover:bg-green-400">
                         <i class="ph-bold ph-plus-square"></i>
                         <p class="text-slate-800 font-bold">TAMBAH DATA</p>
                     </div>
-                    <a href="./pages/list_staff.php" class="w-14 h-14 bg-blue-300 py-4 px-3 rounded-md text-center hover:bg-blue-400"><i class="ph-bold ph-user-list text-lg"></i>
+                    <a href="./pages/list_staff.php" class="w-14 h-14 bg-[#FADFA1] py-4 px-3 rounded-md text-center hover:bg-orange-300"><i class="ph-bold ph-user-list text-lg"></i>
                     </a>
                 </div>
             </div>
-            <div class="card-container grid grid-cols-6 rounded-md w-full h-auto bg-blue-100 gap-5 p-10">
+            <div class="card-container grid grid-cols-6 rounded-br-md rounded-bl-md w-full h-auto
+             bg-[#FFF4EA] gap-5 p-10">
                 <?php foreach ($books as $book): ?>
                     <div class="card hover:cursor-pointer hover:-translate-y-3 transition-all duration-300 border bg-blue-200 flex justify-center w-36 h-44 rounded-md border-slate-500 relative group">
                         <div class="overlay absolute w-full h-full rounded-md bg-black/50 top-0 left-0 flex items-center justify-center flex-col gap-1 scale-y-0 group-hover:scale-y-100 transition-all duration-300">

@@ -129,12 +129,12 @@ function showStaff($id)
 }
 
 
-function editStaff($staffs, $id)
+function editStaff($karyawan, $id)
 {
     global $host;
-    $name = $staffs["name"];
-    $alamat = $staffs["alamat"];
-    $member_id = $staffs["nomor_anggota"];
+    $name = $karyawan["name"];
+    $alamat = $karyawan["alamat"];
+    $member_id = $karyawan["nomor_anggota"];
 
     $query = "UPDATE staff SET name = '$name', alamat = '$alamat', nomor_anggota = '$member_id' WHERE id = $id";
     mysqli_query($host, $query);
