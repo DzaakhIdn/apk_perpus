@@ -3,8 +3,13 @@ require "../database.php";
 require "../function.php";
 
 if (isset($_POST["submit"])) {
-    addBooks($_POST);
-    
+    insertData("books", $_POST);
+    echo "
+    <script>
+    alert('YEAY!, Data berhasil di tambahkan')
+    window.location.href = '../index.php'
+    </script>
+    ";
 }
 ?>
 <!DOCTYPE html>

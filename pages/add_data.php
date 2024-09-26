@@ -8,9 +8,17 @@ if ($method == 'POST') {
     $formType = isset($_POST['form_type']) ? $_POST['form_type'] : 'staff';
 
     if ($formType == 'staff') {
-        addStaff($_POST);
+        insertData("staff", $_POST);
+        echo "<script>
+            alert('data berhasil ditambahkan');
+            window.location.href = 'list_staff.php';
+        </script>";
     } elseif ($formType == 'peminjam') {
-        addPeminjam($_POST);
+        insertData("minjam_bukus", $_POST);
+        echo "<script>
+            alert('data berhasil ditambahkan');
+            window.location.href = '../index.php';
+        </script>";
     }
 }
 ?>
@@ -40,12 +48,15 @@ if ($method == 'POST') {
                 <form action="" method="post" class="mt-5 flex flex-col gap-2" data-aos="zoom-in">
                     <input type="hidden" name="form_type" value="staff">
 
+                    <label for="gender" class="label block mb-2 text-sm font-medium text-gray-900" data-aos="zoom-in">Gender</label>
+                    <select name="gender" id="gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="male.png">Laki-laki</option>
+                        <option value="female.png">Perempuan</option>
+                    </select>
                     <label for="nama">Nama Karyawan Baru</label>
                     <input type="text" name="name" id="nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                     <label for="alamat">Alamat</label>
                     <input type="text" name="alamat" id="alamat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                    <label for="nomor_anggota">Nomor Anggota</label>
-                    <input type="text" name="nomor_anggota" id="nomor_anggota" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
 
                     <button type="submit" name="submit" class="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">kirim</button>
                 </form>

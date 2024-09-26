@@ -2,8 +2,8 @@
 require "database.php";
 require "function.php";
 
-$books = query("SELECT * FROM books");
-$borrows = query("SELECT * FROM minjam_bukus");
+$books = getTables("books");
+$borrows = getTables("minjam_bukus");
 // var_dump($books[0]["id"]);
 
 ?>
@@ -46,7 +46,7 @@ $borrows = query("SELECT * FROM minjam_bukus");
                             <a href="./pages/edit_books.php?id=<?= $books[0]['id'] ?>" class="edit w-auto h-auto bg-green-400 px-3 py-3 rounded-md">
                                 <i class="ph-bold ph-pencil-simple"></i>
                             </a>
-                            <a href="./pages/delete_books.php?id=<?= $books[0]['id'] ?>" onclick="return confirm('Are You Sure ?')" class="edit w-auto h-auto bg-red-400 px-3 py-3 rounded-md">
+                            <a href="./pages/delete.php?id=<?= $books[0]['id'] ?>&type=books" onclick="return confirm('Are You Sure ?')" class="edit w-auto h-auto bg-red-400 px-3 py-3 rounded-md">
                                 <i class="ph-bold ph-trash"></i>
                             </a>
                         </div>
@@ -117,7 +117,7 @@ $borrows = query("SELECT * FROM minjam_bukus");
                             <a href="./pages/edit_pinjam.php?id=<?= $borrow['id'] ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a href="./pages/del_pinjam.php?id=<?= $borrow['id'] ?>" onclick="return confirm('Mau D.O ?')" class="font-medium text-red-600 dark:text-blue-500 hover:underline">delete</a>
+                            <a href="./pages/delete.php?id=<?= $borrow['id'] ?>&type=minjam_bukus" onclick="return confirm('Mau D.O ?')" class="font-medium text-red-600 dark:text-blue-500 hover:underline">delete</a>
                         </td>
                     </tr>
                     <?php $i++ ?>

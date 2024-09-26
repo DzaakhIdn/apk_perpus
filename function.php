@@ -2,9 +2,50 @@
 require "database.php";
 
 // Ngambil semua data dari database
-function query($query)
+function getTables($tables)
 {
     global $host;
+    $result = mysqli_query($host, "SELECT * FROM $tables");
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    return $rows;
+}
+// Function tambah data
+function insertData($tables, $data)
+{
+    global $host;
+
+    if ($tables == 'books') {
+        $judul = $data['judul'];
+        $author = $data['author'];
+        $tahun_terbit = $data['tahun_terbit'];
+        $genre = $data['genre'];
+        $query = "INSERT INTO books VALUES(null, '$judul', '$author', '$tahun_terbit', '$genre')";
+        mysqli_query($host, $query);
+    } elseif ($tables == 'staff') {
+        $gender = $data['gender'];
+        $name = $data['name'];
+        $alamat = $data['alamat'];
+        $nomor_anggota = $data['nomor_anggota'];
+        $query = "INSERT INTO staff VALUES(null, '$gender', '$name', '$alamat', '$nomor_anggota')";
+        mysqli_query($host, $query);
+    } elseif ($tables == 'minjam_bukus') {
+        $nama = $data['nama'];
+        $buku = $data['buku'];
+        $tanggal_pinjam = $data['tanggal_pinjam'];
+        $tanggal_balik = $data['tanggal_balik'];
+        $query = "INSERT INTO minjam_bukus VALUES(null, '$nama', '$buku', '$tanggal_pinjam', '$tanggal_balik')";
+        mysqli_query($host, $query);
+    }
+}
+
+// Function Edit Data
+function currentData($id, $tables)
+{
+    global $host;
+    $query = "SELECT * FROM $tables WHERE id = $id";
     $result = mysqli_query($host, $query);
     $rows = [];
     while ($row = mysqli_fetch_assoc($result)) {
@@ -12,225 +53,48 @@ function query($query)
     }
     return $rows;
 }
-
-
-// Function tambah buku
-function addBooks($books)
+function editData($tables, $data, $id)
 {
     global $host;
 
-    $judul = $books['judul'];
-    $author = $books['author'];
-    $publish = $books['tahun_terbit'];
-    $genre = $books['genre'];
-
-    $query = "INSERT INTO books VALUES (null, '$judul', '$author', '$publish', '$genre')";
-    mysqli_query($host, $query);
-
-    if (mysqli_affected_rows($host) > 0) {
-        echo "
-        <script>
-        alert('Berhasil')
-        window.location.href = '../index.php'
-        </script>
-        ";
-    } else {
-        echo "
-        <script>
-        alert('OH TIDAK🤯, SISTEM MU RUSAK💀💀')
-        window.location.href = '../index.php'
-        </script>
-        ";
+    if ($tables == 'books') {
+        $judul = $data['judul'];
+        $author = $data['author'];
+        $tahun_terbit = $data['tahun_terbit'];
+        $genre = $data['genre'];
+        $query = "UPDATE books SET judul = '$judul', author = '$author', tahun_terbit = '$tahun_terbit', genre = '$genre' WHERE id = $id";
+        mysqli_query($host, $query);
+    } elseif ($tables == 'staff') {
+        $gender = $data['gender'];
+        $name = $data['name'];
+        $alamat = $data['alamat'];
+        $nomor_anggota = $data['nomor_anggota'];
+        $query = "UPDATE staff SET gender = '$gender', name = '$name', alamat = '$alamat', nomor_anggota = '$nomor_anggota' WHERE id = $id";
+        mysqli_query($host, $query);
+    } elseif ($tables == 'minjam_bukus') {
+        $nama = $data['nama'];
+        $buku = $data['buku'];
+        $tanggal_pinjam = $data['tanggal_pinjam'];
+        $tanggal_balik = $data['tanggal_balik'];
+        $query = "UPDATE minjam_bukus SET nama = '$nama', buku = '$buku', tanggal_pinjam = '$tanggal_pinjam', tanggal_balik = '$tanggal_balik' WHERE id = $id";
+        mysqli_query($host, $query);
     }
+    mysqli_affected_rows($host);
 }
 
-
-// Function Edit Buku
-function currentBooks($id)
+// Function Hapus Data
+function deleteValue($id, $type)
 {
     global $host;
-    $query = "SELECT * FROM books WHERE id = $id";
-    $result = mysqli_query($host, $query);
-    // $rows = [];
-    // while ($row = mysqli_fetch_assoc($result)) {
-    //     $rows[] = $row;
-    // }
-    // return $rows;
-
-    var_dump($result);
-}
-
-
-function editBooks($books, $id)
-{
-    global $host;
-
-    $judul = $books['judul'];
-    $author = $books['author'];
-    $tahun_terbit = $books['tahun_terbit'];
-    $genre = $books['genre'];
-
-    $query = "UPDATE books SET judul = '$judul', author = '$author', tahun_terbit = '$tahun_terbit', genre = '$genre' WHERE id = $id";
-    mysqli_query($host, $query);
-
-    return mysqli_affected_rows($host);
-}
-
-// Function Hapus Buku
-function deleteBooks($id)
-{
-    global $host;
-    $query = "DELETE FROM books WHERE id = $id";
-    mysqli_query($host, $query);
-    return mysqli_affected_rows($host);
-}
-
-// Add Staff 
-function addStaff($staffs)
-{
-    global $host;
-
-    $name = $staffs["name"];
-    $alamat = $staffs["alamat"];
-    $member_id = $staffs["nomor_anggota"];
-
-    $query = "INSERT INTO staff VALUES(null, '$name', '$alamat', '$member_id')";
-    mysqli_query($host, $query);
-    if (mysqli_affected_rows($host) > 0) {
-        echo "
-        <script>
-        alert('NICE!, Update Data Berhasil!')
-        window.location.href = 'list_staff.php'
-        </script>
-        ";
-    } else {
-        echo "
-        <script>
-        alert('OH TIDAK🤯, SISTEM MU RUSAK💀💀')
-        window.location.href = '../index.php'
-        </script>
-        ";
+    $tables = "";
+    if ($type == "books") {
+        $tables = "books";
+    } elseif ($type == "staff") {
+        $tables = "staff";
+    } elseif ($type == "minjam_bukus") {
+        $tables = "minjam_bukus";
     }
-}
-
-// Edit Staff
-function showStaff($id)
-{
-    global $host;
-    $query = "SELECT * FROM staff WHERE id = $id";
-    mysqli_query($host, $query);
-    $result = mysqli_query($host, $query);
-
-    $rows = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $rows[] = $row;
-    }
-    return $rows;
-}
-
-
-function editStaff($karyawan, $id)
-{
-    global $host;
-    $name = $karyawan["name"];
-    $alamat = $karyawan["alamat"];
-    $member_id = $karyawan["nomor_anggota"];
-
-    $query = "UPDATE staff SET name = '$name', alamat = '$alamat', nomor_anggota = '$member_id' WHERE id = $id";
-    mysqli_query($host, $query);
-    if (mysqli_affected_rows($host) > 0) {
-        echo "
-        <script>
-        alert('NICE!, Update Data Berhasil!')
-        window.location.href = 'list_staff.php'
-        </script>
-        ";
-    } else {
-        echo "
-        <script>
-        alert('OH TIDAK🤯, SISTEM MU RUSAK💀💀')
-        window.location.href = '../index.php'
-        </script>
-        ";
-    }
-}
-
-// Delete Staff
-function deleteStaff($id)
-{
-    global $host;
-    $query = "DELETE FROM staff WHERE id = $id";
-    mysqli_query($host, $query);
-    return mysqli_affected_rows($host);
-}
-
-// Peminjam Buku
-function addPeminjam($borrow)
-{
-    global $host;
-
-    $nama = $borrow["nama"];
-    $book = $borrow["buku"];
-    $tanggal_pinjam = $borrow["tanggal_pinjam"];
-    $tanggal_balik = $borrow["tanggal_balik"];
-
-    $query = "INSERT INTO minjam_bukus VALUES (null, '$nama', '$book', '$tanggal_pinjam', '$tanggal_balik')";
-    mysqli_query($host, $query);
-
-    if (mysqli_affected_rows($host) > 0) {
-        echo "
-        <script>
-        alert('NICE!, Update Data Berhasil!')
-        window.location.href = '../index.php'
-        </script>
-        ";
-    } else {
-        echo "error" . mysqli_error($host);
-    }
-}
-
-// Edit Peminjam
-function currentPeminjam($id)
-{
-    global $host;
-    $query = "SELECT * FROM minjam_bukus WHERE id = $id";
-    $result = mysqli_query($host, $query);
-    $rows = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $rows[] = $row;
-    }
-    return $rows;
-}
-
-function editPeminjam($borrow, $id)
-{
-    global $host;
-
-    $nama = $borrow["nama"];
-    $book = $borrow["buku"];
-    $tanggal_pinjam = $borrow["tanggal_pinjam"];
-    $tanggal_balik = $borrow["tanggal_balik"];
-
-    $query = "UPDATE minjam_bukus SET nama = '$nama', buku = '$book', tanggal_pinjam = '$tanggal_pinjam', tanggal_balik = '$tanggal_balik' WHERE id = $id";
-    mysqli_query($host, $query);
-
-    if (mysqli_affected_rows($host) > 0) {
-        echo "
-        <script>
-        alert('NICE!, Update Data Berhasil!')
-        window.location.href = '../index.php'
-        </script>
-        ";
-    } else {
-        echo "error";
-    }
-}
-
-// Delete Staff
-function deletePeminjam($id)
-{
-    global $host;
-    $query = "DELETE FROM minjam_bukus WHERE id = $id";
+    $query = "DELETE FROM $tables WHERE id = $id";
     mysqli_query($host, $query);
     return mysqli_affected_rows($host);
 }

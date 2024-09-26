@@ -5,7 +5,7 @@ require "../function.php";
 $id = $_GET["id"];
 if (isset($_POST["submit"])) {
     $data = $_POST;
-    if (editBooks($data, $id)) {
+    if (editData("books", $data, $id) > 0) {
         echo "
         <script>
         alert('YEAY!, Data berhasil di update')
@@ -20,7 +20,7 @@ if (isset($_POST["submit"])) {
     }
 }
 
-$books = currentBooks($id);
+$books = currentData($id, "books");
 
 ?>
 <!DOCTYPE html>

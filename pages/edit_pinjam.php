@@ -4,18 +4,11 @@ require "./../function.php";
 $id = $_GET["id"];
 
 if (isset($_POST["submit"])) {
-    if (editPeminjam($_POST, $id) > 0) {
-        echo "
-        <script>
-        alert('NICE!, Update Data Berhasil!')
-        window.location.href = '../index.php'
-        </script>
-        ";
+    if (editData("minjam_bukus" ,$_POST, $id)) {
     }
 }
 
-
-$peminjam = currentPeminjam($id);
+$peminjam = currentData($id, "minjam_bukus");
 
 ?>
 <!DOCTYPE html>
